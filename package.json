@@ -1,6 +1,6 @@
 {
   "name": "time-machine-masonry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Throw your audience back in time with this awesome web component",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,7 +15,10 @@
     "type": "git",
     "url": "git+https://github.com/h-sslefree/time-machine-masonry.git"
   },
-  "keywords": ["web component", "typescript"],
+  "keywords": [
+    "web component",
+    "typescript"
+  ],
   "author": "Hasslefree",
   "license": "https://github.com/h-sslefree/time-machine-masonry/blob/master/LICENSE.md",
   "homepage": "https://github.com/h-sslefree/time-machine-masonry/blob/master/README.md",
