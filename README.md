@@ -5,7 +5,7 @@ Use this widget to add historical context to your website.
 ## Usage
 First load the javascript magic that defines our web component:
 ```
-<script defer="defer" src="https://www.unpkg.com/time-machine-masonry@1.0.0/dist/main.bundle.js"></script>
+<script defer="defer" src="https://www.unpkg.com/time-machine-masonry@1.0.3"></script>
 ```
 
 Then add the custom element 'time-machine' to your html. And pass parameters to specify a specific context.
@@ -69,7 +69,7 @@ A complete example:
                 text-align: center;
             }
         </style>
-        <script defer="defer" src="https://www.unpkg.com/time-machine-masonry@1.0.0/dist/main.bundle.js"></script>
+        <script defer="defer" src="https://www.unpkg.com/time-machine-masonry@1.0.3"></script>
     </head>
     <body>
         <h1>1993</h1>
