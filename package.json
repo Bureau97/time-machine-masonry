@@ -1,7 +1,7 @@
 {
-  "name": "@tee-e/time-machine-masonry",
+  "name": "time-machine-masonry",
   "version": "1.0.0",
-  "description": "Throw your audience back in time with this web component",
+  "description": "Throw your audience back in time with this awesome web component",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode=production --node-env=production",

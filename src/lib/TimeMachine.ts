@@ -2,23 +2,34 @@ import { Util } from './Util';
 import { Incident } from './Incident';
 import { NoCoverImg, NewsIconOutlineSVG, RadioIconSVG, MovieIconOutlineSVG, NewsIconSVG, MusicIconSVG } from './Icon';
 
-interface IStringHash {
-  [Identifier: string]: boolean | number | string | undefined
+enum colors {
+  background = 0,
+  primary = 1,
+  secondary = 2,
+  tertiary = 3,
+  quaternary = 4,
+  quinary = 5,
+}
+
+interface IHash {
+  [Identifier: string | number]: boolean | number | string | undefined
 }
 
 const template = document.createElement('template');
 // https://www.webcomponents.org/element/@appnest/masonry-layout
 template.innerHTML = `
-<masonry-layout style="background-color: white;">
+<masonry-layout>
 </masonry-layout>
 `;
 
 class TimeMachine extends HTMLElement {
   loading: boolean = false;
+  palette: IHash = {};
 
   constructor() {
     super();
     this.injectFontsToMainDOM();
+    this.derivePalette(this.getAttribute('colorPalette'));
 
     // Add a shadow DOM
     const shadowDOM = this.attachShadow({ mode: 'open' });
@@ -35,6 +46,28 @@ class TimeMachine extends HTMLElement {
     document.head.appendChild(font);
   }
 
+  private derivePalette(colorPaletteJson: string): void {
+    try {
+      const colorPaletteArray = JSON.parse(colorPaletteJson);
+      this.palette[colors.background] = colorPaletteArray[colors.background];
+      this.palette[colors.primary] = colorPaletteArray[colors.primary];
+      this.palette[colors.secondary] = colorPaletteArray[colors.secondary];
+      this.palette[colors.tertiary] = colorPaletteArray[colors.tertiary];
+      this.palette[colors.quaternary] = colorPaletteArray[colors.quaternary];
+      this.palette[colors.quinary] = colorPaletteArray[colors.quinary];
+    }
+    catch (error) {
+      console.error(`Could not parse color palette (${error})`);
+      // Fallback to a default palette.
+      this.palette[colors.background] = 'white';
+      this.palette[colors.primary] = '#1f3b6c';
+      this.palette[colors.secondary] = '#42c0d9';
+      this.palette[colors.tertiary] = '#6accdf';
+      this.palette[colors.quaternary] = '#92d8e5';
+      this.palette[colors.quinary] = '#bae4eb';
+    }
+  }
+
   // Called when the element is added to the DOM
   connectedCallback() {
   }
@@ -42,7 +75,7 @@ class TimeMachine extends HTMLElement {
   // any attribute specified in the following array will automatically
   // trigger attributeChangedCallback when you modify it.
   static get observedAttributes() {
-    return ['date', 'country', 'from', 'to'];
+    return ['date', 'country', 'from', 'to', 'colorPalette'];
   }
 
   removeAllChildren(parentElement: HTMLElement) {
@@ -77,7 +110,7 @@ class TimeMachine extends HTMLElement {
         throw 'No correct date or period specified.';
       }
       this.loading = true;
-      const sourcesFoundInIncidents: IStringHash = {};
+      const sourcesFoundInIncidents: IHash = {};
       let incidents: Incident[] = [];
       await Util.asyncForeach(urls, async (url: string) => {
         const response = await fetch(url);
@@ -89,6 +122,8 @@ class TimeMachine extends HTMLElement {
       const masonry = this.shadowRoot.querySelector('masonry-layout');
       // Remove current set of slides.
       this.removeAllChildren(masonry as HTMLElement);
+      masonry.setAttribute('style', `background-color: ${this.palette[colors.background]};`);
+
       // Add new set of slides.
       incidents.forEach((incident: Incident) => {
         const hasImage = incident?.image && incident?.image[0];
@@ -100,7 +135,7 @@ class TimeMachine extends HTMLElement {
         const card = document.createElement('div');
         card.setAttribute('style', 'font-family: "Comfortaa", "Source Sans Pro", Helvetica, sans-serif; ');
         // const iconBox = document.createElement('div');
-        // iconBox.setAttribute('style', 'color: #92d8e5; width: 25px; position: relative; top: 65px; left: 15px; z-index: 1;');
+        // iconBox.setAttribute('style', `color: ${this.palette[colors.quaternary]}; width: 25px; position: relative; top: 65px; left: 15px; z-index: 1;`);
         // switch (incident.category) {
         //   case 'radioSong': iconBox.innerHTML = MusicIconSVG;
         //     break;
@@ -114,10 +149,10 @@ class TimeMachine extends HTMLElement {
         if (incident?.title) {
           const titleBox = document.createElement('div');
           if (hasImage) {
-            titleBox.setAttribute('style', 'color: #fff; background-color: #1f3b6c; position: relative; top: 50px; padding-top: 5px; text-align: center; font-weight: bold; line-height: 1.4em; overflow: hidden; width: 95%; margin: auto; border-radius: 3px; z-index: 1;');
+            titleBox.setAttribute('style', `color: ${this.palette[colors.background]}; background-color: ${this.palette[colors.primary]}; position: relative; top: 50px; padding-top: 5px; text-align: center; font-weight: bold; line-height: 1.4em; overflow: hidden; width: 95%; margin: auto; border-radius: 3px; z-index: 1;`);
           }
           else {
-            titleBox.setAttribute('style', 'color: #1f3b6c; position: relative; top: 5px; padding-top: 5px; text-align: center; font-weight: bold; line-height: 1.4em; overflow: hidden; z-index: 1;');
+            titleBox.setAttribute('style', `color: ${this.palette[colors.primary]}; position: relative; top: 5px; padding-top: 5px; text-align: center; font-weight: bold; line-height: 1.4em; overflow: hidden; z-index: 1;`);
           }
           titleBox.textContent = incident.title;
           card.appendChild(titleBox);
@@ -126,7 +161,7 @@ class TimeMachine extends HTMLElement {
           const imgBox = document.createElement('div');
           const img = document.createElement('img');
           img.setAttribute('src', incident.image[0]);
-          img.setAttribute('onerror', `this.src='${NoCoverImg}'`);
+          img.setAttribute('onerror', `this.src='${this.getAttribute('noCover') ? this.getAttribute('noCover') : NoCoverImg}'`);
           img.setAttribute('style', 'width:100%');
           imgBox.appendChild(img);
           card.appendChild(imgBox);
@@ -134,10 +169,10 @@ class TimeMachine extends HTMLElement {
         if (incident?.text) {
           const textBox = document.createElement('div');
           if (hasImage) {
-            textBox.setAttribute('style', 'color: #1f3b6c; position: relative; bottom: 78px; margin-bottom: -100px; text-align: justify; background-color: #fff; max-height: 62px; font-size: 0.75em; line-height: 1.2em; padding-top: 7px; padding-left: 7px; padding-right: 5px; overflow: scroll; width: 93%; margin: auto; border-radius: 3px;');
+            textBox.setAttribute('style', `color: ${this.palette[colors.primary]}; position: relative; bottom: 78px; margin-bottom: -100px; text-align: justify; background-color: ${this.palette[colors.background]}; max-height: 62px; font-size: 0.75em; line-height: 1.2em; padding-top: 7px; padding-left: 7px; padding-right: 5px; overflow: scroll; width: 93%; margin: auto; border-radius: 3px;`);
           }
           else {
-            textBox.setAttribute('style', 'color: #1f3b6c; text-align: justify; font-size: 0.75em; line-height: 1.4em; padding-top: 5px; padding-left: 5px; padding-right: 5px; overflow: scroll;');
+            textBox.setAttribute('style', `color: ${this.palette[colors.primary]}; text-align: justify; font-size: 0.75em; line-height: 1.4em; padding-top: 5px; padding-left: 5px; padding-right: 5px; overflow: scroll;`);
           }
           textBox.textContent = incident.text;
           card.appendChild(textBox);
@@ -150,7 +185,7 @@ class TimeMachine extends HTMLElement {
 
       if (Object.keys(sourcesFoundInIncidents).length) {
         const sourcesBox = document.createElement('div');
-        sourcesBox.setAttribute('style', 'color: #42c0d9; font-family: "Comfortaa", "Source Sans Pro", Helvetica, sans-serif; font-weight: normal; font-size: 0.7em;');
+        sourcesBox.setAttribute('style', `color: ${this.palette[colors.secondary]}; font-family: "Comfortaa", "Source Sans Pro", Helvetica, sans-serif; font-weight: normal; font-size: 0.7em;`);
         sourcesBox.textContent = `Source: ${Object.keys(sourcesFoundInIncidents).join(',')}`;
         masonry.appendChild(sourcesBox);
       }
