@@ -17,8 +17,8 @@
   },
   "keywords": ["web component", "typescript"],
   "author": "Hasslefree",
-  "license": "https://github.com/h-sslefree/time-machine-masonry/LICENSE.md",
-  "homepage": "https://github.com/h-sslefree/time-machine-masonry/README.md",
+  "license": "https://github.com/h-sslefree/time-machine-masonry/blob/master/LICENSE.md",
+  "homepage": "https://github.com/h-sslefree/time-machine-masonry/blob/master/README.md",
   "devDependencies": {
     "@types/node": "^18.15.11",
     "@types/webpack": "^5.28.1",
