@@ -1,6 +1,6 @@
 import { Util } from './Util';
 import { Incident } from './Incident';
-import { NoCoverImg, NewsIconOutlineSVG, RadioIconSVG, MovieIconOutlineSVG, NewsIconSVG, MusicIconSVG } from './Icon';
+import { NoImageImg, NewsIconOutlineSVG, RadioIconSVG, MovieIconOutlineSVG, NewsIconSVG, MusicIconSVG } from './Icon';
 
 enum colors {
   background = 0,
@@ -25,11 +25,15 @@ template.innerHTML = `
 class TimeMachine extends HTMLElement {
   loading: boolean = false;
   palette: IHash = {};
+  teeeApiUrl: string = 'https://public.api.v0.tee-e.com';
+  doNotReportBrokenImage: boolean = false;
 
   constructor() {
     super();
     this.injectFontsToMainDOM();
     this.derivePalette(this.getAttribute('colorPalette'));
+    this.teeeApiUrl = this.getAttribute('apiUrl') || this.teeeApiUrl;
+    this.doNotReportBrokenImage = this.getAttribute('doNotReportBrokenImage') ? true : false;
 
     // Add a shadow DOM
     const shadowDOM = this.attachShadow({ mode: 'open' });
@@ -57,7 +61,9 @@ class TimeMachine extends HTMLElement {
       this.palette[colors.quinary] = colorPaletteArray[colors.quinary];
     }
     catch (error) {
-      console.error(`Could not parse color palette (${error})`);
+      if (colorPaletteJson) {
+        console.error(`Could not parse color palette (${error})`);
+      }
       // Fallback to a default palette.
       this.palette[colors.background] = 'white';
       this.palette[colors.primary] = '#1f3b6c';
@@ -75,7 +81,7 @@ class TimeMachine extends HTMLElement {
   // any attribute specified in the following array will automatically
   // trigger attributeChangedCallback when you modify it.
   static get observedAttributes() {
-    return ['date', 'country', 'from', 'to', 'colorPalette'];
+    return ['date', 'country', 'category', 'emotion', 'impact', 'from', 'to', 'colorPalette'];
   }
 
   removeAllChildren(parentElement: HTMLElement) {
@@ -86,25 +92,31 @@ class TimeMachine extends HTMLElement {
     }
   }
 
-  // Format dateString, fromString, toString: yyyy-mm-dd
-  async fetchHistory(country: string, dateString: string, fromString: string, toString: string) {
+  // dateString, fromString, toString must be formatted as: yyyy-mm-dd
+  // country, category, emotion and impact can be left empty to fallback to default or can have one or more (comma separated) values
+  async fetchHistory(countries: string, categories: string, emotions: string, impacts: string, dateString: string, fromString: string, toString: string) {
+    // Set defaults to explicit empty string.
+    countries = countries || '';
+    categories = categories || '';
+    emotions = emotions || '';
+    impacts = impacts || '';
     try {
-      if (!country) {
-        throw 'No country specified';
-      }
-      let urls = [];
+      // if (!countries) {
+      //   throw 'No country specified';
+      // }
+      let urls: string[] = [];
       if (dateString) {
         const date = new Date(dateString).toISOString().substring(0, 10);
-        urls.push(`https://public.api.v0.tee-e.com/${date}?country=${country}&category=newsItem&limit=50`);
-        urls.push(`https://public.api.v0.tee-e.com/${date}?country=${country}&category=radioSong&limit=10`);
-        urls.push(`https://public.api.v0.tee-e.com/${date}?country=${country}&category=cinemaMovie&limit=10`);
+        categories.split(',').forEach((category) => {
+          urls.push(`${this.teeeApiUrl}/${date}?country=${countries}&category=${category}&emotion=${emotions}&impact=${impacts}&limit=20`);
+        });
       }
       else if (fromString && toString) {
         const from = new Date(fromString).toISOString().substring(0, 10);
         const to = new Date(toString).toISOString().substring(0, 10);
-        urls.push(`https://public.api.v0.tee-e.com/?from=${from}&to=${to}&country=${country}&category=newsItem&limit=50`);
-        urls.push(`https://public.api.v0.tee-e.com/?from=${from}&to=${to}&country=${country}&category=radioSong&limit=10`);
-        urls.push(`https://public.api.v0.tee-e.com/?from=${from}&to=${to}&country=${country}&category=cinemaMovie&limit=10`);
+        categories.split(',').forEach((category) => {
+          urls.push(`${this.teeeApiUrl}/?from=${from}&to=${to}&country=${countries}&category=${category}&emotion=${emotions}&impact=${impacts}&limit=20`);
+        });
       }
       else {
         throw 'No correct date or period specified.';
@@ -161,7 +173,8 @@ class TimeMachine extends HTMLElement {
           const imgBox = document.createElement('div');
           const img = document.createElement('img');
           img.setAttribute('src', incident.image[0]);
-          img.setAttribute('onerror', `this.src='${this.getAttribute('noCover') ? this.getAttribute('noCover') : NoCoverImg}'`);
+
+          img.setAttribute('onerror', this.doNotReportBrokenImage ? '' : `fetch('${this.teeeApiUrl}/feedback/image/broken', { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ url: '${incident.image[0]}' })}); ` + `this.src='${this.getAttribute('noImage') ? this.getAttribute('noImage') : NoImageImg}'`);
           img.setAttribute('style', 'width:100%');
           imgBox.appendChild(img);
           card.appendChild(imgBox);
@@ -200,6 +213,9 @@ class TimeMachine extends HTMLElement {
   renderChanges() {
     this.fetchHistory(
       this.getAttribute('country'),
+      this.getAttribute('category'),
+      this.getAttribute('emotion'),
+      this.getAttribute('impact'),
       this.getAttribute('date'),
       this.getAttribute('from'),
       this.getAttribute('to')
