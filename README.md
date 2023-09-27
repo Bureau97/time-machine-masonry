@@ -86,3 +86,8 @@ A complete example:
     </body>
 </html>
 ```
+
+## Development
+Fetch all packages: `npm ci`  
+Run the application: `npm run demo`  
+Navigate to http://localhost:8000  
