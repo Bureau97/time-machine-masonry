@@ -1,6 +1,6 @@
 {
   "name": "time-machine-masonry",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Throw your audience back in time with this awesome web component",
   "main": "dist/main.bundle.js",
   "scripts": {
