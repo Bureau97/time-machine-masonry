@@ -37,9 +37,9 @@ colorPalette='["#f9f9f9", "#e57b13", "#ec940e", "#f3ae0a", "#f3ae0a", "#fbc806"]
 ```
 
 ### 404 robustness
-Urls to images may be broken, to circumvent broken images you can specify an base64 encoded image that should be displayed via parameter `noCover`. E.g.
+Urls to images may be broken, to circumvent broken images you can specify an base64 encoded image that should be displayed via parameter `noImage`. E.g.
 ```
-    noCover="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="
+    noImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="
 ```
 
 A complete example:
@@ -79,10 +79,15 @@ A complete example:
         </div>
 
         <h1>2010</h1>
-        <!-- A period in a wide container. With custom coloring and a custom 'nocover' image. -->
+        <!-- A period in a wide container. With custom coloring and a custom 'noImage' image. -->
         <div class="big-container">
-            <time-machine from="2010-01-01" to="2010-12-31" country="nl" colorPalette='["#f9f9f9", "#e57b13", "#ec940e", "#f3ae0a", "#f3ae0a", "#fbc806"]' noCover="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="></time-machine>
+            <time-machine from="2010-01-01" to="2010-12-31" country="nl" colorPalette='["#f9f9f9", "#e57b13", "#ec940e", "#f3ae0a", "#f3ae0a", "#fbc806"]' noImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="></time-machine>
         </div>
     </body>
 </html>
 ```
+
+## Development
+Fetch all packages: `npm ci`  
+Run the application: `npm run demo`  
+Navigate to http://localhost:8000  
