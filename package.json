@@ -15,7 +15,13 @@
     "develop": "cross-env webpack serve --hot --mode development",
     "dev": "npm run develop",
     "serve": "webpack serve",
-    "demo": "(./node_modules/.bin/simplehttpserver dist &) && npm run watch"
+    "demo": "(./node_modules/.bin/simplehttpserver dist &) && npm run watch",
+    "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
+    "lint:eslint": "eslint 'src/**/*.ts'",
+    "lint:lit-analyzer": "lit-analyzer",
+    "format": "prettier \"src/**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
+    "analyze": "cem analyze --litelement --globs \"src/**/*.ts\"",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -31,8 +37,10 @@
   "license": "https://github.com/h-sslefree/time-machine-masonry/blob/master/LICENSE.md",
   "homepage": "https://github.com/h-sslefree/time-machine-masonry/blob/master/README.md",
   "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.8.4",
     "@types/node": "^20.8.2",
     "@types/webpack": "^5.28.1",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@webpack-cli/generators": "^3.0.1",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
@@ -40,6 +48,7 @@
     "css-loader": "^6.7.3",
     "declaration-bundler-webpack-plugin": "^1.0.3",
     "html-webpack-plugin": "^5.5.0",
+    "lit-analyzer": "^1.2.1",
     "node-sass": "^9.0.0",
     "prettier": "^3.0.3",
     "sass": "^1.60.0",
