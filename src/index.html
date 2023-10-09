@@ -32,7 +32,7 @@
         .big-container {
             margin: auto;
             /* font-weight: bold; */
-            text-align: center;
+            /* text-align: center; */
         }
 
 
@@ -41,6 +41,10 @@
           /* --time-machine-text-color: #555;
           --time-machine-background-color: orange; */
           --time-machine-ruler-color: orange;
+          --time-machine-title-background-color: orange;
+          --time-machine-title-color: white;
+          --time-machine-text-background-color: rgba(255, 165, 0, 0.7);
+          --time-machine-text-color: white;
           min-height: 25vh;
 
         }
@@ -48,6 +52,10 @@
         time-machine-tile {
           margin: 0;
           border: 1px solid #ccc;
+        }
+
+        time-machine-tile h1 {
+          text-align: left;
         }
 
     </style>
@@ -77,11 +85,12 @@
           from="2010-01-01"
           to="2010-12-31"
           country="nl"
-          category="newsItem,cinemaMovie"
+          category="newsItem,cinemaMovie,musicItem"
           colorPalette='["#f9f9f9", "#e57b13", "#ec940e", "#f3ae0a", "#f3ae0a", "#fbc806"]'
           noImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="
           style="background-color: #f9f9f9; color: #555;"
           show-icons
+          shuffle
           >
           <div>Whazaaaaa</div>
           <div>2</div>

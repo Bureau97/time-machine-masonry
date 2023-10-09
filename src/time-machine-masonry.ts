@@ -103,7 +103,7 @@ class TimeMachineTileElement extends LitElement {
       );
       border: 0;
       height: 1px;
-      margin-top: 16px;
+      margin-top: 32px;
     }
 
     span.category-icon {
@@ -117,7 +117,7 @@ class TimeMachineTileElement extends LitElement {
 
     span.category-icon svg {
       width: 24px;
-      fill: var(--time-machine-icon-color, rgba(0, 0, 0, 1));
+      // fill: var(--time-machine-icon-color, rgba(0, 0, 0, 1));
     }
   `;
 
