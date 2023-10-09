@@ -1,11 +1,12 @@
 {
   "name": "time-machine-masonry",
-  "version": "1.0.3",
+  "version": "2.0.0-dev",
   "description": "Throw your audience back in time with this awesome web component",
   "main": "dist/time-machine-masonry.js",
   "type": "module",
   "module": "dist/time-machine-masonry.js",
   "types": "dist/time-machine-masonry.d.ts",
+  "customElements": "custom-elements.json",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode=production --node-env=production",
