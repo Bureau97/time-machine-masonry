@@ -12,4 +12,34 @@ export class Util {
             await callback(array[index], index, array);
         }
     }
+
+    public static async reportBrokenImage(teeeApiUrl: string, id: string, src: string | null): Promise<void> {
+      console.warn(`Broken image: ${src}`);
+      fetch(`${teeeApiUrl}/feedback/image/broken`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          incident_id: id,
+          url: src,
+        })
+      });
+    }
+
+    public static removeAllChildren(parentElement: HTMLElement | undefined): void {
+      if (!parentElement) {
+        return;
+      }
+      var childToDelete = parentElement.lastChild;
+      while (childToDelete) {
+        parentElement.removeChild(childToDelete);
+        childToDelete = parentElement.lastChild;
+      }
+    }
+}
+
+export interface IHash {
+  [Identifier: string | number]: boolean | number | string | undefined
 }

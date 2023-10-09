@@ -1,6 +1,7 @@
 import { Util } from './Util';
 import { Incident } from './Incident';
-import { NoImageImg, NewsIconOutlineSVG, RadioIconSVG, MovieIconOutlineSVG, NewsIconSVG, MusicIconSVG } from './Icon';
+// import { NoImageImg, NewsIconOutlineSVG, RadioIconSVG, MovieIconOutlineSVG, NewsIconSVG, MusicIconSVG } from './Icon';
+import { NoImageImg} from './Icon';
 
 enum colors {
   background = 0,
