@@ -1,23 +1,20 @@
-
 import '@appnest/masonry-layout';
 
-import { LitElement, css, html } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
-import { classMap, ClassInfo } from 'lit/directives/class-map.js';
-import { styleMap, StyleInfo } from 'lit/directives/style-map.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import {LitElement, css, html} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
+import {classMap, ClassInfo} from 'lit/directives/class-map.js';
+import {styleMap, StyleInfo} from 'lit/directives/style-map.js';
+import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 
-import { Util, IHash } from './lib/Util';
-import { Incident } from './lib/Incident';
+import {Util, IHash} from './lib/Util';
+import {Incident} from './lib/Incident';
 
 import {
   NoImageImg,
   NewsIconOutlineSVG,
   MusicIconSVG,
-  MovieIconOutlineSVG
+  MovieIconOutlineSVG,
 } from './lib/Icon';
-
-
 
 @customElement('time-machine-tile')
 class TimeMachineTileElement extends LitElement {
@@ -33,7 +30,7 @@ class TimeMachineTileElement extends LitElement {
   @property({type: String})
   noImageSrc?: string;
 
-  @property({ type: String })
+  @property({type: String})
   category?: string;
 
   @property({type: Boolean})
@@ -51,7 +48,10 @@ class TimeMachineTileElement extends LitElement {
     }
 
     h1 {
-      background-color: var(--time-machine-title-background-color, rgba(255, 255, 255, .7));
+      background-color: var(
+        --time-machine-title-background-color,
+        rgba(255, 255, 255, 0.7)
+      );
       color: var(--time-machine-title-color, rgba(0, 0, 0, 1));
       font-size: var(--time-machine-title-font-size, 16px);
       margin: 0;
@@ -80,7 +80,10 @@ class TimeMachineTileElement extends LitElement {
     p {
       margin: 0;
       padding: 4px;
-      background-color: var(--time-machine-text-background-color, rgba(255, 255, 255, .5));
+      background-color: var(
+        --time-machine-text-background-color,
+        rgba(255, 255, 255, 0.5)
+      );
       color: var(--time-machine-text-color, rgba(0, 0, 0, 1));
       font-size: var(--time-machine-text-font-size, 14px);
     }
@@ -124,24 +127,18 @@ class TimeMachineTileElement extends LitElement {
   override render() {
     if (this.hasImage()) {
       return html`<div class="time-machine-tile with-image">
-        <div class="time-machine-tile-content">
-          ${this.renderTitle()}
-          ${this.renderCategoryIcon()}
-          ${this.renderImage()}
-          ${this.renderTextContent()}
-        </div>
-        <hr />
+        ${this.renderContent()}
       </div>`;
     }
-    return html`<div class="time-machine-tile">
-      <div class="time-machine-tile-content">
-        ${this.renderTitle()}
-        ${this.renderCategoryIcon()}
-        ${this.renderImage()}
+    return html`<div class="time-machine-tile">${this.renderContent()}</div>`;
+  }
+
+  renderContent() {
+    return html`<div class="time-machine-tile-content">
+        ${this.renderTitle()} ${this.renderCategoryIcon()} ${this.renderImage()}
         ${this.renderTextContent()}
       </div>
-      <hr />
-    </div>`;
+      <hr /> `;
   }
 
   hasImage() {
@@ -177,14 +174,16 @@ class TimeMachineTileElement extends LitElement {
         break;
       case 'radioSong':
         categoryIcon = MusicIconSVG;
-          break;
+        break;
       case 'cinemaMovie':
         categoryIcon = MovieIconOutlineSVG;
         break;
     }
 
     if (this.category && this.showIcon && categoryIcon) {
-      return html`<span class="category-icon ">${unsafeHTML(categoryIcon)}</span>`;
+      return html`<span class="category-icon "
+        >${unsafeHTML(categoryIcon)}</span
+      >`;
     }
     return html``;
   }
@@ -197,9 +196,9 @@ class TimeMachineTileElement extends LitElement {
       return;
     }
 
-    if (this.reportBrokenImages ) {
+    if (this.reportBrokenImages) {
       Util.reportBrokenImage(this.teeeApiUrl, this.id, this.src);
-      console.info(Util.reportBrokenImage)
+      console.info(Util.reportBrokenImage);
     }
 
     // wait a bit before setting the image
@@ -209,9 +208,8 @@ class TimeMachineTileElement extends LitElement {
     }, 250);
 
     return false;
-  }
+  };
 }
-
 
 @customElement('time-machine')
 export class TimeMachine extends LitElement {
@@ -225,34 +223,37 @@ export class TimeMachine extends LitElement {
   @property({type: String})
   country: string = '';
 
-  @property({ type: String })
+  @property({type: String})
   category: string = '';
 
-  @property({ type: String })
+  @property({type: String})
   emotion: string = '';
 
   @property({type: String})
   impact: string = '';
 
-  @property({ type: String })
+  @property({type: String})
   from: string = '';
 
-  @property({ type: String })
+  @property({type: String})
   to: string = '';
 
   @property({type: String})
   colorPalette: string = '';
 
-  @property()
+  @property({type: Object})
   classes: ClassInfo = {};
 
-  @property()
+  @property({type: Object})
   styles: StyleInfo = {};
 
   @property({type: Boolean})
   shuffle: boolean = false;
 
-  @property({ type: Boolean, attribute: 'show-icons' })
+  @property({type: Boolean, attribute: 'show-sources'})
+  showSources: boolean = false;
+
+  @property({type: Boolean, attribute: 'show-icons'})
   showIcons: boolean = false;
 
   @property({type: String, attribute: 'no-image-src'})
@@ -266,7 +267,6 @@ export class TimeMachine extends LitElement {
       color: var(--time-machine-text-color, black);
       background: var(--time-machine-background-color, white);
     }
-
   `;
 
   constructor() {
@@ -275,16 +275,25 @@ export class TimeMachine extends LitElement {
   }
 
   injectFontsToMainDOM() {
-    const font = document.createElement("link");
-    font.href = "https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap";
-    font.rel = "stylesheet"
+    const font = document.createElement('link');
+    font.href =
+      'https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap';
+    font.rel = 'stylesheet';
     document.head.appendChild(font);
   }
 
   override connectedCallback() {
     console.debug('connectedCallback');
     super.connectedCallback();
-    this.fetchHistory(this.country, this.category, this.emotion, this.impact, this.date, this.from, this.to);
+    this.fetchHistory(
+      this.country,
+      this.category,
+      this.emotion,
+      this.impact,
+      this.date,
+      this.from,
+      this.to
+    );
   }
 
   override disconnectedCallback() {
@@ -292,7 +301,11 @@ export class TimeMachine extends LitElement {
     super.disconnectedCallback();
   }
 
-  override attributeChangedCallback(name: string, _old: string | null, value: string | null): void {
+  override attributeChangedCallback(
+    name: string,
+    _old: string | null,
+    value: string | null
+  ): void {
     console.debug('attributeChangedCallback: ', name, _old, value);
     super.attributeChangedCallback(name, _old, value);
     // this.fetchHistory(this.country, this.category, this.emotion, this.impact, this.date, this.from, this.to);
@@ -302,14 +315,7 @@ export class TimeMachine extends LitElement {
     console.debug('render');
     return html`
       <div class=${classMap(this.classes)} style=${styleMap(this.styles)}>
-        <masonry-layout>
-          <div>1</div>
-          <div>2</div>
-          <div>3</div>
-          <div>4</div>
-          <div>5</div>
-          <div>6</div>
-        </masonry-layout>
+        <masonry-layout></masonry-layout>
       </div>
     `;
   }
@@ -318,7 +324,15 @@ export class TimeMachine extends LitElement {
     console.debug('firstUpdated');
   }
 
-  async fetchHistory(countries: string, categories: string, emotions: string, impacts: string, dateString: string, fromString: string, toString: string) {
+  async fetchHistory(
+    countries: string,
+    categories: string,
+    emotions: string,
+    impacts: string,
+    dateString: string,
+    fromString: string,
+    toString: string
+  ) {
     console.debug('fetchHistory');
     // Set defaults to explicit empty string.
     countries = countries || '';
@@ -330,21 +344,23 @@ export class TimeMachine extends LitElement {
       // if (!countries) {
       //   throw 'No country specified';
       // }
-      let urls: string[] = [];
+      const urls: string[] = [];
       if (dateString) {
         const date = new Date(dateString).toISOString().substring(0, 10);
         categories.split(',').forEach((category) => {
-          urls.push(`${this.teeeApiUrl}/${date}?country=${countries}&category=${category}&emotion=${emotions}&impact=${impacts}&limit=20`);
+          urls.push(
+            `${this.teeeApiUrl}/${date}?country=${countries}&category=${category}&emotion=${emotions}&impact=${impacts}&limit=20`
+          );
         });
-      }
-      else if (fromString && toString) {
+      } else if (fromString && toString) {
         const from = new Date(fromString).toISOString().substring(0, 10);
         const to = new Date(toString).toISOString().substring(0, 10);
         categories.split(',').forEach((category) => {
-          urls.push(`${this.teeeApiUrl}/?from=${from}&to=${to}&country=${countries}&category=${category}&emotion=${emotions}&impact=${impacts}&limit=20`);
+          urls.push(
+            `${this.teeeApiUrl}/?from=${from}&to=${to}&country=${countries}&category=${category}&emotion=${emotions}&impact=${impacts}&limit=20`
+          );
         });
-      }
-      else {
+      } else {
         throw 'No correct date or period specified.';
       }
       this.loading = true;
@@ -377,7 +393,6 @@ export class TimeMachine extends LitElement {
 
       // masonry.setAttribute('style', `background-color: ${this.palette[colors.background]};`);
 
-
       // Add new set of slides.
       incidents.forEach((incident: Incident) => {
         const hasImage = incident?.image && incident?.image[0];
@@ -388,13 +403,15 @@ export class TimeMachine extends LitElement {
           sourcesFoundInIncidents[incident.source] = true;
         }
 
-        const card = document.createElement('time-machine-tile') as TimeMachineTileElement;
+        const card = document.createElement(
+          'time-machine-tile'
+        ) as TimeMachineTileElement;
         card.reportBrokenImages = this.reportBrokenImages;
         card.teeeApiUrl = this.teeeApiUrl;
         card.noImageSrc = this.noImageSrc;
 
         card.id = incident.id;
-        card.src = incident.image ? incident.image[0] : null ;
+        card.src = incident.image ? incident.image[0] : null;
         card.title = incident.title;
         card.textContent = incident.text;
         card.category = incident.category;
@@ -432,7 +449,7 @@ export class TimeMachine extends LitElement {
           // const img = document.createElement('img');
 
           // img.addEventListener('error', this.imageLoadErrorHandler.bind(this, img, incident), {
-            // 'once': true
+          // 'once': true
           // });
 
           // img.setAttribute('src', incident.image[0]);
@@ -457,7 +474,10 @@ export class TimeMachine extends LitElement {
         }
 
         const ruler = document.createElement('hr');
-        ruler.setAttribute('style', 'width: 50%; border-top: 1px solid #f5eaea00; margin-bottom: -5px; margin-top: 15px;');
+        ruler.setAttribute(
+          'style',
+          'width: 50%; border-top: 1px solid #f5eaea00; margin-bottom: -5px; margin-top: 15px;'
+        );
         // card.appendChild(ruler);
 
         masonry?.appendChild(card);
@@ -465,23 +485,21 @@ export class TimeMachine extends LitElement {
 
       console.info('sources: ', sourcesFoundInIncidents);
 
-      if (Object.keys(sourcesFoundInIncidents).length) {
+      if (this.showSources && Object.keys(sourcesFoundInIncidents).length) {
         const sourcesBox = document.createElement('div');
-        // sourcesBox.setAttribute('style', `color: ${this.palette[colors.secondary]}; font-family: "Comfortaa", "Source Sans Pro", Helvetica, sans-serif; font-weight: normal; font-size: 0.7em;`);
-        sourcesBox.textContent = `Source: ${Object.keys(sourcesFoundInIncidents).join(',')}`;
+        sourcesBox.classList.add('time-machine-tile-sources');
+        sourcesBox.textContent = `Source: ${Object.keys(
+          sourcesFoundInIncidents
+        ).join(',')}`;
         masonry?.appendChild(sourcesBox);
       }
 
       this.loading = false;
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
     }
   }
-
-
 }
-
 
 declare global {
   interface HTMLElementTagNameMap {

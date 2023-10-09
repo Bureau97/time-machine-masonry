@@ -1,103 +1,100 @@
 <!doctype html>
 <html>
-
-<head>
+  <head>
     <title>Time Machine Demo</title>
     <style>
-        body {
-            font-family: 'Comfortaa', cursive;
-            line-height: 170%;
-        }
+      body {
+        font-family: 'Comfortaa', cursive;
+        line-height: 170%;
+      }
 
-        .logo {
-            width: 100%;
-            text-align: center;
-        }
+      .logo {
+        width: 100%;
+        text-align: center;
+      }
 
-        .logo img {
-            width: 60%;
-        }
+      .logo img {
+        width: 60%;
+      }
 
-        h1 {
-            text-align: center;
-        }
+      h1 {
+        text-align: center;
+      }
 
-        .small-container {
-            margin: auto;
-            width: 300px;
-            height: 750px;
-            overflow: scroll;
-        }
+      .small-container {
+        margin: auto;
+        width: 300px;
+        height: 750px;
+        overflow: scroll;
+      }
 
-        .big-container {
-            margin: auto;
-            /* font-weight: bold; */
-            /* text-align: center; */
-        }
+      .big-container {
+        margin: auto;
+        /* font-weight: bold; */
+        /* text-align: center; */
+      }
 
-
-
-        time-machine {
-          /* --time-machine-text-color: #555;
+      time-machine {
+        /* --time-machine-text-color: #555;
           --time-machine-background-color: orange; */
-          --time-machine-ruler-color: orange;
-          --time-machine-title-background-color: orange;
-          --time-machine-title-color: white;
-          --time-machine-text-background-color: rgba(255, 165, 0, 0.7);
-          --time-machine-text-color: white;
-          min-height: 25vh;
+        --time-machine-ruler-color: orange;
+        --time-machine-title-background-color: orange;
+        --time-machine-title-color: white;
+        --time-machine-text-background-color: rgba(255, 165, 0, 0.7);
+        --time-machine-text-color: white;
+        min-height: 25vh;
+      }
 
-        }
+      time-machine-tile {
+        margin: 0;
+        border: 1px solid #ccc;
+      }
 
-        time-machine-tile {
-          margin: 0;
-          border: 1px solid #ccc;
-        }
-
-        time-machine-tile h1 {
-          text-align: left;
-        }
-
+      time-machine-tile h1 {
+        text-align: left;
+      }
     </style>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
     <h1>1993</h1>
     <!-- One specific date in a narrow container. No custom coloring. -->
     <div class="small-container">
-        <time-machine
-          date="1993-03-03"
-          country="nl"
-          category="newsItem"
-          no-image-src="http://tee-e.com/images/pic01.jpg"
-          show-icons
-          ></time-machine>
+      <time-machine
+        date="1993-03-03"
+        country="nl"
+        category="newsItem"
+        no-image-src="http://tee-e.com/images/pic01.jpg"
+        show-icons
+      ></time-machine>
     </div>
 
     <h1>2010</h1>
     <!-- A period in a wide container. With custom coloring and a custom 'noImage' image. -->
     <div class="big-container">
-        <time-machine
-          from="2010-01-01"
-          to="2010-12-31"
-          country="nl"
-          category="newsItem,cinemaMovie,musicItem"
-          colorPalette='["#f9f9f9", "#e57b13", "#ec940e", "#f3ae0a", "#f3ae0a", "#fbc806"]'
-          noImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="
-          style="background-color: #f9f9f9; color: #555;"
-          show-icons
-          shuffle
-          >
-          <div>Whazaaaaa</div>
-          <div>2</div>
-          <div>sdfjona asdpojfga pifdngvq</div>
-          <div><p>sdfjona asdpojfga pifdngvq</p></div>
-        </time-machine>
+      <time-machine
+        from="2010-01-01"
+        to="2010-12-31"
+        country="nl"
+        category="newsItem,cinemaMovie,musicItem"
+        colorPalette='["#f9f9f9", "#e57b13", "#ec940e", "#f3ae0a", "#f3ae0a", "#fbc806"]'
+        noImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="
+        style="background-color: #f9f9f9; color: #555"
+        show-icons
+        shuffle
+      >
+        <div>Whazaaaaa</div>
+        <div>2</div>
+        <div>sdfjona asdpojfga pifdngvq</div>
+        <div><p>sdfjona asdpojfga pifdngvq</p></div>
+      </time-machine>
     </div>
-</body>
-
+  </body>
 </html>
