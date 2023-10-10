@@ -2,8 +2,6 @@ import '@appnest/masonry-layout';
 
 import {LitElement, css, html} from 'lit';
 import {customElement, property, query} from 'lit/decorators.js';
-import {classMap, ClassInfo} from 'lit/directives/class-map.js';
-import {styleMap, StyleInfo} from 'lit/directives/style-map.js';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 
 import {Util, IHash} from './lib/Util';
@@ -45,6 +43,7 @@ class TimeMachineTileElement extends LitElement {
       position: relative;
       margin: 0;
       padding: 0;
+      background-color: var(--time-machine-background-color);
     }
 
     h1 {
@@ -66,13 +65,12 @@ class TimeMachineTileElement extends LitElement {
     }
 
     img {
+      border: 0;
       margin: 0;
       padding: 0;
       display: block;
       width: 100%;
-      // min-height: 300px;
-      // height: auto;
-      min-height: 375px;
+      min-height: var(--time-machine-image-min-height, 375px);
       object-fit: cover;
       object-position: center;
     }
@@ -89,11 +87,11 @@ class TimeMachineTileElement extends LitElement {
     }
 
     .time-machine-tile.with-image p {
-      position: absolute;
+      position: var(--time-machine-text-position, absolute);
       bottom: 0;
       left: 0;
       right: 0;
-      max-height: 150px;
+      max-height: var(--time-machine-text-max-height, 150px);
       overflow-y: auto;
     }
 
@@ -114,13 +112,15 @@ class TimeMachineTileElement extends LitElement {
       position: absolute;
       top: 0;
       right: 0;
-      color: var(--time-machine-text-color, rgba(0, 0, 0, 1));
+      color: var(
+        --time-machine-icon-color,
+        var(--time-machine-title-color, rgba(0, 0, 0, 1))
+      );
       margin: 4px;
     }
 
     span.category-icon svg {
       width: 24px;
-      // fill: var(--time-machine-icon-color, rgba(0, 0, 0, 1));
     }
   `;
 
@@ -181,7 +181,7 @@ class TimeMachineTileElement extends LitElement {
     }
 
     if (this.category && this.showIcon && categoryIcon) {
-      return html`<span class="category-icon "
+      return html`<span class="category-icon" title="${this.category}"
         >${unsafeHTML(categoryIcon)}</span
       >`;
     }
@@ -189,16 +189,18 @@ class TimeMachineTileElement extends LitElement {
   }
 
   _handleImageLoadError = () => {
-    console.info('image load error ', this.id, this.src);
+    console.debug(`Error loading image: ${this.src}`);
     const noImageSrc = this.noImageSrc || NoImageImg;
 
+    // don't try to set the image source if it
+    // has already been set
     if (this.src == noImageSrc) {
       return;
     }
 
+    // report broken images back to the server
     if (this.reportBrokenImages) {
       Util.reportBrokenImage(this.teeeApiUrl, this.id, this.src);
-      console.info(Util.reportBrokenImage);
     }
 
     // wait a bit before setting the image
@@ -238,15 +240,6 @@ export class TimeMachine extends LitElement {
   @property({type: String})
   to: string = '';
 
-  @property({type: String})
-  colorPalette: string = '';
-
-  @property({type: Object})
-  classes: ClassInfo = {};
-
-  @property({type: Object})
-  styles: StyleInfo = {};
-
   @property({type: Boolean})
   shuffle: boolean = false;
 
@@ -271,15 +264,6 @@ export class TimeMachine extends LitElement {
 
   constructor() {
     super();
-    // this.injectFontsToMainDOM();
-  }
-
-  injectFontsToMainDOM() {
-    const font = document.createElement('link');
-    font.href =
-      'https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap';
-    font.rel = 'stylesheet';
-    document.head.appendChild(font);
   }
 
   override connectedCallback() {
@@ -314,7 +298,7 @@ export class TimeMachine extends LitElement {
   override render() {
     console.debug('render');
     return html`
-      <div class=${classMap(this.classes)} style=${styleMap(this.styles)}>
+      <div class="time-machine-container">
         <masonry-layout></masonry-layout>
       </div>
     `;
@@ -391,99 +375,29 @@ export class TimeMachine extends LitElement {
       // Remove current set of slides.
       Util.removeAllChildren(masonry);
 
-      // masonry.setAttribute('style', `background-color: ${this.palette[colors.background]};`);
-
       // Add new set of slides.
       incidents.forEach((incident: Incident) => {
-        const hasImage = incident?.image && incident?.image[0];
-        // const hasTitle = incident?.title;
-        // const hasText = incident?.text;
-
-        if (incident.source) {
-          sourcesFoundInIncidents[incident.source] = true;
-        }
-
         const card = document.createElement(
           'time-machine-tile'
         ) as TimeMachineTileElement;
+
         card.reportBrokenImages = this.reportBrokenImages;
         card.teeeApiUrl = this.teeeApiUrl;
         card.noImageSrc = this.noImageSrc;
+        card.showIcon = this.showIcons;
 
         card.id = incident.id;
         card.src = incident.image ? incident.image[0] : null;
         card.title = incident.title;
         card.textContent = incident.text;
         card.category = incident.category;
-        card.showIcon = this.showIcons;
 
-        // card.setAttribute('style', 'font-family: "Comfortaa", "Source Sans Pro", Helvetica, sans-serif; ');
-        // const iconBox = document.createElement('div');
-        // iconBox.setAttribute('style', `color: ${this.palette[colors.quaternary]}; width: 25px; position: relative; top: 65px; left: 15px; z-index: 1;`);
-        // switch (incident.category) {
-        //   case 'radioSong': iconBox.innerHTML = MusicIconSVG;
-        //     break;
-        //   case 'newsItem': iconBox.innerHTML = NewsIconOutlineSVG;
-        //     break;
-        //   case 'cinemaMovie': iconBox.innerHTML = MovieIconOutlineSVG;
-        //     break;
-        // }
-        // card.appendChild(iconBox);
-
-        if (incident?.title) {
-          const titleBox = document.createElement('h1');
-          titleBox.classList.add('time-machine-tile-title');
-          // if (hasImage) {
-          //   titleBox.setAttribute('style', `color: ${this.palette[colors.background]}; background-color: ${this.palette[colors.primary]}; position: relative; top: 50px; padding-top: 5px; text-align: center; font-weight: bold; line-height: 1.4em; overflow: hidden; width: 95%; margin: auto; border-radius: 3px; z-index: 1;`);
-          // }
-          // else {
-          //   titleBox.setAttribute('style', `color: ${this.palette[colors.primary]}; position: relative; top: 5px; padding-top: 5px; text-align: center; font-weight: bold; line-height: 1.4em; overflow: hidden; z-index: 1;`);
-          // }
-          titleBox.textContent = incident.title;
-          // card.appendChild(titleBox);
+        if (incident.source) {
+          sourcesFoundInIncidents[incident.source] = true;
         }
-
-        if (hasImage) {
-          const imgBox = document.createElement('div');
-          imgBox.classList.add('time-machine-tile-image');
-          // const img = document.createElement('img');
-
-          // img.addEventListener('error', this.imageLoadErrorHandler.bind(this, img, incident), {
-          // 'once': true
-          // });
-
-          // img.setAttribute('src', incident.image[0]);
-
-          // imgBox.appendChild(img);
-          // card.appendChild(imgBox);
-        }
-
-        if (incident?.text) {
-          const textBox = document.createElement('p');
-          textBox.classList.add('time-machine-tile-text');
-
-          // if (hasImage) {
-          //   textBox.setAttribute('style', `color: ${this.palette[colors.primary]}; position: relative; bottom: 78px; margin-bottom: -100px; text-align: justify; background-color: ${this.palette[colors.background]}; max-height: 62px; font-size: 0.75em; line-height: 1.2em; padding-top: 7px; padding-left: 7px; padding-right: 5px; overflow: scroll; width: 93%; margin: auto; border-radius: 3px;`);
-          // }
-          // else {
-          //   textBox.setAttribute('style', `color: ${this.palette[colors.primary]}; text-align: justify; font-size: 0.75em; line-height: 1.4em; padding-top: 5px; padding-left: 5px; padding-right: 5px; overflow: scroll;`);
-          // }
-
-          textBox.textContent = incident.text;
-          // card.appendChild(textBox);
-        }
-
-        const ruler = document.createElement('hr');
-        ruler.setAttribute(
-          'style',
-          'width: 50%; border-top: 1px solid #f5eaea00; margin-bottom: -5px; margin-top: 15px;'
-        );
-        // card.appendChild(ruler);
 
         masonry?.appendChild(card);
       });
-
-      console.info('sources: ', sourcesFoundInIncidents);
 
       if (this.showSources && Object.keys(sourcesFoundInIncidents).length) {
         const sourcesBox = document.createElement('div');

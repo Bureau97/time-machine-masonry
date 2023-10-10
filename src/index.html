@@ -5,7 +5,7 @@
     <style>
       body {
         font-family: 'Comfortaa', cursive;
-        line-height: 170%;
+        line-height: 150%;
       }
 
       .logo {
@@ -35,14 +35,27 @@
       }
 
       time-machine {
-        /* --time-machine-text-color: #555;
-          --time-machine-background-color: orange; */
+        /* --time-machine-background-color: orange; */
         --time-machine-ruler-color: orange;
         --time-machine-title-background-color: orange;
         --time-machine-title-color: white;
-        --time-machine-text-background-color: rgba(255, 165, 0, 0.7);
-        --time-machine-text-color: white;
+        /* --time-machine-text-position: static; */
+        /* --time-machine-text-background-color: rgba(255, 255, 255, 0.7); */
+        --time-machine-text-color: #000;
+        --time-machine-text-max-height: 200px;
+        --time-machine-image-min-height: 500px;
+
         min-height: 25vh;
+      }
+
+      time-machine.small {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        --time-machine-text-font-size: 12px;
+        /* line-height: normal; */
+      }
+
+      time-machine-tile p {
+        line-height: normal;
       }
 
       time-machine-tile {
@@ -50,8 +63,8 @@
         border: 1px solid #ccc;
       }
 
-      time-machine-tile h1 {
-        text-align: left;
+      time-machine {
+        text-align: center;
       }
     </style>
 
@@ -68,6 +81,7 @@
     <!-- One specific date in a narrow container. No custom coloring. -->
     <div class="small-container">
       <time-machine
+        class="small"
         date="1993-03-03"
         country="nl"
         category="newsItem"
@@ -86,7 +100,6 @@
         category="newsItem,cinemaMovie,musicItem"
         colorPalette='["#f9f9f9", "#e57b13", "#ec940e", "#f3ae0a", "#f3ae0a", "#fbc806"]'
         noImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="
-        style="background-color: #f9f9f9; color: #555"
         show-icons
         shuffle
       >

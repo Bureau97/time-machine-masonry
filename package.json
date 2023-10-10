@@ -16,7 +16,7 @@
     "develop": "cross-env webpack serve --hot --mode development",
     "dev": "npm run develop",
     "serve": "webpack serve",
-    "demo": "(./node_modules/.bin/simplehttpserver dist &) && npm run watch",
+    "demo": "(./node_modules/.bin/simplehttpserver dist &) && webpack --watch --mode production",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",
     "lint:lit-analyzer": "lit-analyzer",
