@@ -3,24 +3,42 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
-  entry: path.resolve(__dirname, 'src/index.ts'),
+
+  entry: path.resolve(__dirname, 'src/time-machine-masonry.ts'),
+
   output: {
-    filename: '[name].bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, "dist"),
+    // publicPath: '/dist/',
   },
+
+  devtool: 'inline-source-map',
+
   devServer: {
-    open: true,
-    host: "localhost",
+    // open: true,
+    static: {
+        directory: path.resolve(__dirname, 'dist'),
+        serveIndex: true,
+    },
+    hot: true,
+    port: 8000,
+    host: 'localhost',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+    allowedHosts: ['localhost'],
   },
+
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
   ],
+
   module: {
     rules: [
       {
-        test: /\.ts$/i,
+        test: /\.tsx?$/i,
         loader: "ts-loader",
         exclude: ["/node_modules/"],
       },
@@ -31,18 +49,11 @@ const config = {
       {
         test: /\.scss$/i,
         use: ["style-loader", "css-loader", "sass-loader"],
-      },
-      // {
-      //   test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-      //   type: "asset",
-      // },
-
-      // Add your rules for custom modules here
-      // Learn more about loaders from https://webpack.js.org/loaders/
+      }
     ],
   },
   resolve: {
-    extensions: [".ts", "..."],
+    extensions: ['.tsx', '.ts', '.js'],
   },
 };
 
