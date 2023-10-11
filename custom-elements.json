@@ -9,157 +9,29 @@
         {
           "kind": "class",
           "description": "",
-          "name": "TimeMachineTileElement",
-          "members": [
-            {
-              "kind": "field",
-              "name": "src",
-              "type": {
-                "text": "string | null"
-              },
-              "default": "''",
-              "attribute": "src"
-            },
-            {
-              "kind": "field",
-              "name": "reportBrokenImages",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "reportBrokenImages"
-            },
-            {
-              "kind": "field",
-              "name": "teeeApiUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "teeeApiUrl"
-            },
-            {
-              "kind": "field",
-              "name": "noImageSrc",
-              "type": {
-                "text": "string | undefined"
-              },
-              "attribute": "noImageSrc"
-            },
-            {
-              "kind": "field",
-              "name": "category",
-              "type": {
-                "text": "string | undefined"
-              },
-              "attribute": "category"
-            },
-            {
-              "kind": "field",
-              "name": "showIcon",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "showIcon"
-            },
-            {
-              "kind": "method",
-              "name": "renderContent"
-            },
-            {
-              "kind": "method",
-              "name": "hasImage"
-            },
-            {
-              "kind": "method",
-              "name": "renderTitle"
-            },
-            {
-              "kind": "method",
-              "name": "renderImage"
-            },
-            {
-              "kind": "method",
-              "name": "renderTextContent"
-            },
-            {
-              "kind": "method",
-              "name": "renderCategoryIcon"
-            },
-            {
-              "kind": "field",
-              "name": "_handleImageLoadError"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "src",
-              "type": {
-                "text": "string | null"
-              },
-              "default": "''",
-              "fieldName": "src"
-            },
-            {
-              "name": "reportBrokenImages",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "reportBrokenImages"
-            },
-            {
-              "name": "teeeApiUrl",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "teeeApiUrl"
-            },
-            {
-              "name": "noImageSrc",
-              "type": {
-                "text": "string | undefined"
-              },
-              "fieldName": "noImageSrc"
-            },
-            {
-              "name": "category",
-              "type": {
-                "text": "string | undefined"
-              },
-              "fieldName": "category"
-            },
-            {
-              "name": "showIcon",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "showIcon"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "time-machine-tile",
-          "customElement": true
-        },
-        {
-          "kind": "class",
-          "description": "",
           "name": "TimeMachine",
           "members": [
             {
               "kind": "field",
-              "name": "loading",
+              "name": "sources",
+              "type": {
+                "text": "Array<string>"
+              },
+              "privacy": "private",
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "_loading",
               "type": {
                 "text": "boolean"
               },
-              "privacy": "public",
+              "privacy": "private",
               "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "loading"
             },
             {
               "kind": "field",
@@ -167,8 +39,8 @@
               "type": {
                 "text": "string"
               },
-              "privacy": "public",
-              "default": "'https://public.api.v0.tee-e.com'"
+              "default": "'https://public.api.v0.tee-e.com'",
+              "attribute": "teeeApiUrl"
             },
             {
               "kind": "field",
@@ -176,8 +48,8 @@
               "type": {
                 "text": "boolean"
               },
-              "privacy": "public",
-              "default": "false"
+              "default": "false",
+              "attribute": "report-broken-images"
             },
             {
               "kind": "field",
@@ -244,24 +116,6 @@
             },
             {
               "kind": "field",
-              "name": "colorPalette",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "attribute": "colorPalette"
-            },
-            {
-              "kind": "field",
-              "name": "classes",
-              "type": {
-                "text": "ClassInfo"
-              },
-              "default": "{}",
-              "attribute": "classes"
-            },
-            {
-              "kind": "field",
               "name": "shuffle",
               "type": {
                 "text": "boolean"
@@ -304,59 +158,221 @@
               }
             },
             {
+              "kind": "field",
+              "name": "incidents",
+              "type": {
+                "text": "Array<Incident>"
+              },
+              "privacy": "private",
+              "default": "[]"
+            },
+            {
               "kind": "method",
-              "name": "injectFontsToMainDOM"
+              "name": "renderTiles",
+              "parameters": [
+                {
+                  "name": "incidents",
+                  "type": {
+                    "text": "Incident[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderTile",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "incident",
+                  "type": {
+                    "text": "Incident"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderTileContent",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "incident",
+                  "type": {
+                    "text": "Incident"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderTileTitle",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "incident",
+                  "type": {
+                    "text": "Incident"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderTileImage",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "incident",
+                  "type": {
+                    "text": "Incident"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderTileTextContent",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "incident",
+                  "type": {
+                    "text": "Incident"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderTileCategoryIcon",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "incident",
+                  "type": {
+                    "text": "Incident"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderSources",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_incidentsTask",
+              "type": {
+                "text": "Task"
+              },
+              "privacy": "private",
+              "default": "new Task(this, {\n    task: async ([country, category, emotion, impact, date, from, to]) => {\n      console.debug('incidentsTask');\n      this.fetchHistory(country, category, emotion, impact, date, from, to);\n    },\n    args: () => [\n      this.country,\n      this.category,\n      this.emotion,\n      this.impact,\n      this.date,\n      this.from,\n      this.to,\n    ],\n  })"
             },
             {
               "kind": "method",
               "name": "fetchHistory",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
               "parameters": [
                 {
-                  "name": "countries",
+                  "name": "country",
                   "type": {
                     "text": "string"
                   }
                 },
                 {
-                  "name": "categories",
+                  "name": "category",
                   "type": {
                     "text": "string"
                   }
                 },
                 {
-                  "name": "emotions",
+                  "name": "emotion",
                   "type": {
                     "text": "string"
                   }
                 },
                 {
-                  "name": "impacts",
+                  "name": "impact",
                   "type": {
                     "text": "string"
                   }
                 },
                 {
-                  "name": "dateString",
+                  "name": "date",
                   "type": {
                     "text": "string"
                   }
                 },
                 {
-                  "name": "fromString",
+                  "name": "from",
                   "type": {
                     "text": "string"
                   }
                 },
                 {
-                  "name": "toString",
+                  "name": "to",
                   "type": {
                     "text": "string"
                   }
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "_handleImageLoadError"
             }
           ],
           "attributes": [
+            {
+              "name": "teeeApiUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "'https://public.api.v0.tee-e.com'",
+              "fieldName": "teeeApiUrl"
+            },
+            {
+              "name": "report-broken-images",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "reportBrokenImages"
+            },
             {
               "name": "date",
               "type": {
@@ -414,30 +430,6 @@
               "fieldName": "to"
             },
             {
-              "name": "colorPalette",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "fieldName": "colorPalette"
-            },
-            {
-              "name": "classes",
-              "type": {
-                "text": "ClassInfo"
-              },
-              "default": "{}",
-              "fieldName": "classes"
-            },
-            {
-              "name": "styles",
-              "type": {
-                "text": "StyleInfo"
-              },
-              "default": "{}",
-              "fieldName": "styles"
-            },
-            {
               "name": "shuffle",
               "type": {
                 "text": "boolean"
@@ -479,14 +471,6 @@
         }
       ],
       "exports": [
-        {
-          "kind": "custom-element-definition",
-          "name": "time-machine-tile",
-          "declaration": {
-            "name": "TimeMachineTileElement",
-            "module": "src/time-machine-masonry.ts"
-          }
-        },
         {
           "kind": "js",
           "name": "TimeMachine",
@@ -693,12 +677,6 @@
               "parameters": [
                 {
                   "name": "teeeApiUrl",
-                  "type": {
-                    "text": "string"
-                  }
-                },
-                {
-                  "name": "id",
                   "type": {
                     "text": "string"
                   }
