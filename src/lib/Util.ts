@@ -19,7 +19,6 @@ export class Util {
 
   public static async reportBrokenImage(
     teeeApiUrl: string,
-    id: string,
     src: string | null
   ): Promise<void> {
     console.warn(`Broken image: ${src}`);
@@ -30,7 +29,6 @@ export class Util {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        incident_id: id,
         url: src,
       }),
     });
