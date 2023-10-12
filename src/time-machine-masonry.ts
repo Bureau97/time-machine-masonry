@@ -1,12 +1,12 @@
 import '@appnest/masonry-layout';
 
-import {LitElement, css, html, PropertyValues, TemplateResult} from 'lit';
-import {customElement, property, query, state} from 'lit/decorators.js';
-import {unsafeHTML} from 'lit/directives/unsafe-html.js';
-import {Task} from '@lit/task';
+import { LitElement, css, html, PropertyValues, TemplateResult } from 'lit';
+import { customElement, property, query, state } from 'lit/decorators.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { Task } from '@lit/task';
 
-import {Util, IHash} from './lib/Util';
-import {Incident} from './lib/Incident';
+import { Util, IHash } from './lib/Util';
+import { Incident } from './lib/Incident';
 
 import {
   NoImageImg,
@@ -28,43 +28,43 @@ export class TimeMachine extends LitElement {
     this._loading = value;
   }
 
-  @property({type: String})
+  @property({ type: String })
   teeeApiUrl: string = 'https://public.api.v0.tee-e.com';
 
-  @property({type: Boolean, attribute: 'report-broken-images'})
+  @property({ type: Boolean, attribute: 'report-broken-images' })
   reportBrokenImages: boolean = false;
 
-  @property({type: String})
+  @property({ type: String })
   date: string = '';
 
-  @property({type: String})
+  @property({ type: String })
   country: string = '';
 
-  @property({type: String})
+  @property({ type: String })
   category: string = '';
 
-  @property({type: String})
+  @property({ type: String })
   emotion: string = '';
 
-  @property({type: String})
+  @property({ type: String })
   impact: string = '';
 
-  @property({type: String})
+  @property({ type: String })
   from: string = '';
 
-  @property({type: String})
+  @property({ type: String })
   to: string = '';
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   shuffle: boolean = false;
 
-  @property({type: Boolean, attribute: 'show-sources'})
-  showSources: boolean = false;
+  @property({ type: Boolean, attribute: 'suppress-images' })
+  suppressImages: boolean = false;
 
-  @property({type: Boolean, attribute: 'show-icons'})
+  @property({ type: Boolean, attribute: 'show-icons' })
   showIcons: boolean = false;
 
-  @property({type: String, attribute: 'no-image-src'})
+  @property({ type: String, attribute: 'no-image-src' })
   noImageSrc: string = '';
 
   @query('masonry-layout')
@@ -214,9 +214,9 @@ export class TimeMachine extends LitElement {
       <div class="time-machine-container">
         <masonry-layout>
           ${this._incidentsTask.render({
-            pending: () => html`Loading data...`,
-            complete: () => html`${this.renderTiles(this.incidents)}`,
-          })}
+      pending: () => html`Loading data...`,
+      complete: () => html`${this.renderTiles(this.incidents)}`,
+    })}
         </masonry-layout>
         ${this.renderSources()}
       </div>
@@ -228,12 +228,18 @@ export class TimeMachine extends LitElement {
     return html`${incidents.map((incident) => this.renderTile(incident))}`;
   }
 
+  private _tileShouldDisplayAnImage(incident: Incident): boolean {
+    const hasImage = !!incident.image;
+    const displayImages = !this.suppressImages;
+    console.info(`_tileShouldDisplayAnImage: ${hasImage} && ${displayImages}`, hasImage && displayImages)
+    return hasImage && displayImages;
+  }
+
   renderTile(incident: Incident): TemplateResult {
     console.debug('renderTile');
-    const hasImage = !!incident.image;
     const tileContent: TemplateResult = this.renderTileContent(incident);
 
-    if (hasImage) {
+    if (this._tileShouldDisplayAnImage(incident)) {
       return html`<div class="time-machine-tile with-image">
         ${tileContent}
       </div>`;
@@ -263,7 +269,7 @@ export class TimeMachine extends LitElement {
 
   renderTileImage(incident: Incident): TemplateResult {
     console.debug('renderTileImage');
-    if (incident.image) {
+    if (this._tileShouldDisplayAnImage(incident)) {
       return html`<img
         @error=${this._handleImageLoadError}
         src=${incident.image}

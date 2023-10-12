@@ -1,112 +1,100 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Time Machine Demo</title>
-    <style>
-      body {
-        font-family: 'Comfortaa', cursive;
-        line-height: 150%;
-      }
 
-      .logo {
-        width: 100%;
-        text-align: center;
-      }
+<head>
+  <title>Time Machine Demo</title>
+  <style>
+    body {
+      font-family: 'Comfortaa', cursive;
+      line-height: 150%;
+    }
 
-      .logo img {
-        width: 60%;
-      }
+    .logo {
+      width: 100%;
+      text-align: center;
+    }
 
-      h1 {
-        text-align: center;
-      }
+    .logo img {
+      width: 60%;
+    }
 
-      .small-container {
-        margin: auto;
-        width: 300px;
-        height: 750px;
-        overflow: scroll;
-      }
+    h1 {
+      text-align: center;
+    }
 
-      .big-container {
-        margin: auto;
-        /* font-weight: bold; */
-        /* text-align: center; */
-      }
+    .small-container {
+      margin: auto;
+      width: 300px;
+      height: 750px;
+      overflow: scroll;
+    }
 
-      time-machine {
-        /* --time-machine-background-color: orange; */
-        --time-machine-ruler-color: orange;
-        --time-machine-title-background-color: orange;
-        --time-machine-title-color: white;
-        /* --time-machine-text-position: static; */
-        /* --time-machine-text-background-color: rgba(255, 255, 255, 0.7); */
-        --time-machine-text-color: #000;
-        --time-machine-text-max-height: 200px;
-        --time-machine-image-min-height: 500px;
+    .big-container {
+      margin: auto;
+      /* font-weight: bold; */
+      /* text-align: center; */
+    }
 
-        min-height: 25vh;
-      }
+    time-machine {
+      /* --time-machine-background-color: orange; */
+      --time-machine-ruler-color: orange;
+      --time-machine-title-background-color: orange;
+      --time-machine-title-color: white;
+      /* --time-machine-text-position: static; */
+      /* --time-machine-text-background-color: rgba(255, 255, 255, 0.7); */
+      --time-machine-text-color: #000;
+      --time-machine-text-max-height: 200px;
+      --time-machine-image-min-height: 500px;
 
-      time-machine.small {
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        --time-machine-text-font-size: 12px;
-        /* line-height: normal; */
-      }
+      min-height: 25vh;
+    }
 
-      time-machine-tile p {
-        line-height: normal;
-      }
+    time-machine.small {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      --time-machine-text-font-size: 12px;
+      /* line-height: normal; */
+    }
 
-      time-machine-tile {
-        margin: 0;
-        border: 1px solid #ccc;
-      }
+    time-machine-tile p {
+      line-height: normal;
+    }
 
-      time-machine {
-        text-align: center;
-      }
-    </style>
+    time-machine-tile {
+      margin: 0;
+      border: 1px solid #ccc;
+    }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
+    time-machine {
+      text-align: center;
+    }
+  </style>
 
-  <body>
-    <section>
-      <h1>1993</h1>
-      <!-- One specific date in a narrow container. No custom coloring. -->
-      <div class="small-container">
-        <time-machine
-          class="small"
-          date="1993-03-03"
-          country="nl"
-          category="newsItem"
-          no-image-src="https://tee-e.com/images/pic01.jpg"
-          show-icons
-        ></time-machine>
-      </div>
-    </section>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+</head>
 
-    <section>
-      <h1>2010</h1>
-      <!-- A period in a wide container. With custom coloring and a custom 'noImage' image. -->
-      <div class="big-container">
-        <time-machine
-          from="2010-01-01"
-          to="2010-12-31"
-          country="nl"
-          category="newsItem,cinemaMovie,musicItem"
-          no-image-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="
-          show-icons
-          shuffle
-        >
-        </time-machine>
-      </div>
-    </section>
-  </body>
+<body>
+  <section>
+    <h1>1993</h1>
+    <!-- One specific date in a narrow container. No custom coloring. -->
+    <div class="small-container">
+      <time-machine class="small" date="1993-03-03" country="nl" category="newsItem"
+        no-image-src="https://tee-e.com/images/pic01.jpg" show-icons suppress-images></time-machine>
+    </div>
+  </section>
+
+  <section>
+    <h1>2010</h1>
+    <!-- A period in a wide container. With custom coloring and a custom 'noImage' image. -->
+    <div class="big-container">
+      <time-machine from="2010-01-01" to="2010-12-31" country="nl" category="newsItem,cinemaMovie,musicItem"
+        no-image-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="
+        shuffle>
+      </time-machine>
+    </div>
+  </section>
+</body>
+
 </html>

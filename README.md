@@ -1,91 +1,59 @@
 # Time Machine Widget
 
-Use this widget to add historical context to your website.
+Use this widget to add historical context to your website. The internal name of an historic fact is `incident` and each incident is displayed in a `tile`. A tile consists of a title, an optional image and optional text block over the image.
 
 ## Usage
+### Load
 First load the javascript magic that defines our web component:
 ```
-<script defer="defer" src="https://www.unpkg.com/time-machine-masonry@1.0.3"></script>
+<script defer="defer" src="https://www.unpkg.com/time-machine-masonry@2.0.0"></script>
 ```
 
-Then add the custom element 'time-machine' to your html. And pass parameters to specify a specific context.
-### Window
-If you are interested in a specific date, then pass the date via parameter 'date'. E.g. March 3rd 1993:
+### Use
+After this you can use a HTML element called 'time-machine' in your html page in which the incidents of a certain date (or date range) will be displayed. E.g.
 ```
 <time-machine date="1993-03-03"></time-machine>
 ```
-If you are interested in a specific period, then pass that period via parameters `from` and `to`. E.g. the year 2010:
-```
-<time-machine from="2010-01-01" to="2010-12-31"></time-machine>
-```
 
-### Perspective
-Historical events are perceived from a certain perspective. Therefore we offer data per country. Currently we support these countries: `nl`, `fr`, `de`.
-Specify the perspective you are interested in via parameter `country`. E.g. the year 2010 in a Dutch perspective:
+The time-machine element will use all the space it has been granted. To control this you can use css styling on the time-machine element itself or wrap it in a container that has controlled dimensions:
 ```
-<time-machine from="2010-01-01" to="2010-12-31" country="nl"></time-machine>
+<div class="small-container">
+    <time-machine class="small" date="1993-03-03" country="nl" category="newsItem"
+        no-image-src="https://tee-e.com/images/pic01.jpg" show-icons></time-machine>
+</div>
 ```
+Please refer to index.html of this repo for a complete example.
 
-### Coloring
-You can customize the widget by specifying a color palette. This palette should be passed via parameter `colorPalette` and should contain a list of colors in JSON format. The position in that list defines how the color should be used.
-```
-colorPalette='[<background>, <primary>, <secondary>, <tertiary>, <quaternary>, <quinary>]'
-```
-E.g.
-```
-colorPalette='["#f9f9f9", "#e57b13", "#ec940e", "#f3ae0a", "#f3ae0a", "#fbc806"]'
-```
+### Control behaviour
+The time-machine element accepts parameters to control it's behaviour:
+* `date` : a specific *date* you want to retrieve incidents for. Format: `yyyy-mm-dd`
+* `from` and `to` : a *period* you want to retrieve incidents for. Format: `yyyy-mm-dd`
+* `country` : fetch incidents that where newsworhty in this country(ies). Reference https://swagger.tee-e.com for a list of supported countries.
+* `category` : fetch incidents for this category(ies). Reference https://swagger.tee-e.com for a list of supported categories.
+* `emotion` : fetch incidents that match this emotion(s). Reference https://swagger.tee-e.com for a list of supported emotions.
+* `impact` : fetch incidents had this impact(s). Reference https://swagger.tee-e.com for a list of supported emotions.
+* `shuffle` : shuffle the results before displaying
+* `show-icons` : show the icons that correspond to the category
+* `suppress-images` : do not show any images
+* `no-image-src` : what image should be shown when an incident's image is broken. Use a url or base64 encoded image
+* `report-broken-images` : report broken images back to the server so that they can be repaired
 
-### 404 robustness
-Urls to images may be broken, to circumvent broken images you can specify an base64 encoded image that should be displayed via parameter `noImage`. E.g.
-```
-    noImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="
-```
+### Control styling
 
-A complete example:
-```
-<!doctype html>
-<html>
-    <head>
-        <style>
-            body {
-                font-family: serif, sans-serif;
-            }
+The time-machine element accepts css parameters to specify (significant parts of) it's styling:
+* `--time-machine-title-color` : the text color of the title of the tile
+* `--time-machine-title-background-color`: the background color of the title of the tile
+* `--time-machine-title-font-size` : the font size of the title text of the tile
+* `--time-machine-text-color` : the color of the content text of the tile
+* `--time-machine-text-background-color` : the color of the background of the content of the tile
+* `--time-machine-text-font-size` : the size of the title text of the tile
+* `--time-machine-text-max-height` : the maximum height of the text of the tile
+* `--time-machine-background-color` : the color of the background of the tile
+* `--time-machine-image-min-height` : the minimum height of the image
+* `--time-machine-ruler-color` : the color of the ruler that is displayed between two incidents vertically
+* `--time-machine-icon-color` : the color of the incident's category icon
 
-            h1 {
-                text-align: center;
-            }
 
-            .small-container {
-                margin: auto;
-                width: 300px;
-                height: 500px;
-                overflow: scroll;
-            }
-
-            .big-container {
-                margin: auto;
-                font-weight: bold;
-                text-align: center;
-            }
-        </style>
-        <script defer="defer" src="https://www.unpkg.com/time-machine-masonry@1.0.3"></script>
-    </head>
-    <body>
-        <h1>1993</h1>
-        <!-- One specific date in a narrow container. No custom coloring. -->
-        <div class="small-container">
-            <time-machine date="1993-03-03" country="nl"></time-machine>
-        </div>
-
-        <h1>2010</h1>
-        <!-- A period in a wide container. With custom coloring and a custom 'noImage' image. -->
-        <div class="big-container">
-            <time-machine from="2010-01-01" to="2010-12-31" country="nl" colorPalette='["#f9f9f9", "#e57b13", "#ec940e", "#f3ae0a", "#f3ae0a", "#fbc806"]' noImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAKCAYAAADGmhxQAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wQMDCEDZE8l3wAAAAxpVFh0Q29tbWVudAAAAAAAvK6ymQAAABVJREFUOMtjYBgFo2AUjIJRMAooAQAGSgABkOHaHwAAAABJRU5ErkJggg=="></time-machine>
-        </div>
-    </body>
-</html>
-```
 
 ## Development
 Fetch all packages: `npm ci`  
